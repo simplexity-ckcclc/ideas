@@ -16,6 +16,7 @@
         <module>http</module>
         <module>anything</module>
         <module>csv</module>
+        <module>hibernate</module>
     </modules>
 
     <properties>
