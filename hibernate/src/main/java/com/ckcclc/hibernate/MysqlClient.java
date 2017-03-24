@@ -7,6 +7,9 @@ package com.ckcclc.hibernate;
 
 import com.ckcclc.hibernate.config.DbConfig;
 import com.ckcclc.hibernate.dao.DeviceValidateErrorDao;
+import com.ckcclc.hibernate.entity.TestEntity;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 import java.text.ParseException;
 
@@ -109,6 +112,26 @@ public class MysqlClient {
     public static void main(String[] args) throws ParseException {
 
         DeviceValidateErrorDao dao = new DeviceValidateErrorDao(dbConfig);
+
+        String name = "foo";
+        Integer age = 6;
+        String city = "bar";
+        TestEntity entity = findByNameAndAge(dao, name, age);
+
+        if (entity == null) {
+            entity = new TestEntity();
+            entity.setName(name);
+            entity.setAge(age);
+        }
+
+        entity.setCity(city);
+        dao.getCommonDAO().saveOrUpdate(entity);
     }
 
+    public static TestEntity findByNameAndAge(DeviceValidateErrorDao dao, String name, Integer age) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(TestEntity.class)
+                .add(Restrictions.eq("name", name))
+                .add(Restrictions.eq("age", age));
+        return dao.getCommonDAO().findByCriteriaUnique(criteria, TestEntity.class);
+    }
 }

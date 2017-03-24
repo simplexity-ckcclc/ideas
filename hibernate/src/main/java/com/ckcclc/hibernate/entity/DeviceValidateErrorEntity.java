@@ -14,7 +14,6 @@ import java.util.Date;
 @Entity
 @Table(name = "device_validate_error_info",
         uniqueConstraints = @UniqueConstraint(columnNames = {"device_id", "device_mac", "device_hw_id"}))
-//@SQLInsert( sql="INSERT INTO device_validate_error_info ON DUPLICATE KEY UPDATE")
 public class DeviceValidateErrorEntity {
 
     @Id
