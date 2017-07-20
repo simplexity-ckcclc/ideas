@@ -17,6 +17,7 @@
         <module>anything</module>
         <module>csv</module>
         <module>hibernate</module>
+        <module>hadoop</module>
     </modules>
 
     <properties>
