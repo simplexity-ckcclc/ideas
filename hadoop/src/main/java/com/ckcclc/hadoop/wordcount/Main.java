@@ -1,10 +1,8 @@
-package com.ckcclc.hadoop.secondarysort;
+package com.ckcclc.hadoop.wordcount;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
@@ -12,29 +10,22 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 
 /**
- * Created by ckcclc on 20/07/2017.
+ * Created by ckcclc on 04/09/2017.
  */
 public class Main extends Configured implements Tool {
 
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
-
     public static void main(String[] args) throws Exception {
-
         int status = ToolRunner.run(new Main(), args);
         System.exit(status);
-
     }
+
 
     @Override
     public int run(String[] strings) throws Exception {
         Configuration configuration = getConf();
-        Job job = Job.getInstance(configuration, "SecondarySort");
+        Job job = Job.getInstance(configuration, "wordcount");
         job.setJarByClass(Main.class);
 
         job.setInputFormatClass(TextInputFormat.class);
@@ -43,18 +34,11 @@ public class Main extends Configured implements Tool {
         job.setOutputFormatClass(TextOutputFormat.class);
         FileOutputFormat.setOutputPath(job, new Path(strings[1]));
 
-        job.setMapperClass(SortMapper.class);
-        job.setMapOutputKeyClass(CompositeKey.class);
-        job.setMapOutputValueClass(Text.class);
+        job.setMapperClass(CountMapper.class);
+        job.setCombinerClass(CountReducer.class);
+        job.setReducerClass(CountReducer.class);
 
-        job.setReducerClass(SortReducer.class);
-        job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(IntWritable.class);
-
-        job.setPartitionerClass(SortPartitioner.class);
-        job.setGroupingComparatorClass(SortGroupingComparator.class);
-
-        boolean successful = job.waitForCompletion(true);
-        return successful ? 0 : 1;
+        boolean status = job.waitForCompletion(true);
+        return status ? 0 : 1;
     }
 }

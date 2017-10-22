@@ -8,6 +8,10 @@ import org.apache.hadoop.io.WritableComparator;
  */
 public class SortGroupingComparator extends WritableComparator {
 
+    protected SortGroupingComparator() {
+        super(CompositeKey.class, true);
+    }
+
     @Override
     public int compare(WritableComparable a, WritableComparable b) {
         CompositeKey keyA = (CompositeKey) a;

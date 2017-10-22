@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ckcclc.springboot.dao.PersonMapper">
+    <resultMap type="com.ckcclc.springboot.entity.Person"
+               id="DataResult">
+        <result column="name" property="name" />
+        <result column="country" property="country" />
+        <result column="age" property="age" />
+    </resultMap>
+
+    <select id="findByName" resultMap="DataResult">
+        <![CDATA[
+		SELECT
+			*
+		FROM
+			person
+		WHERE
+			name = #{name}
+	]]>
+    </select>
+
+
+</mapper>
