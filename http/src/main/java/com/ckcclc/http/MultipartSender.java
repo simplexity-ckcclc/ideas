@@ -7,7 +7,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,18 +35,24 @@ public class MultipartSender {
     }
 
     public static void send() throws Exception {
-        String serverUrl = "http://127.0.0.1:15080/log/uploadDeviceLog" +
-                "?deviceToken=1ea939db55014b28b4fdd4d653716990&deviceId=deviceid&deviceMac=mac" +
-                "&tcsp=1.2&deviceModel=model&deviceHwVer=hwVer&fwId=fwId&fwVer=fwVer";
+//        String serverUrl = "http://127.0.0.1:15080/log/uploadDeviceLog" +
+//                "?deviceToken=1ea939db55014b28b4fdd4d653716990&deviceId=deviceid&deviceMac=mac" +
+//                "&tcsp=1.2&deviceModel=model&deviceHwVer=hwVer&fwId=fwId&fwVer=fwVer";
+        String serverUrl = "http://127.0.0.1:10080/test/multipart";
 
-        URI url = new URIBuilder(serverUrl)
-                .build();
+        URI url = new URIBuilder(serverUrl).build();
 
         HttpPost httpPost = new HttpPost(url);
 
         MultipartEntityBuilder postEntity = MultipartEntityBuilder.create();
 
-        postEntity.addBinaryBody("test", new File("D:\\aaa.txt"), ContentType.APPLICATION_OCTET_STREAM, "test");
+        postEntity.addPart("file", new FileBody(new File("/Users/ckcclc/Downloads/DSCF4777.jpg"),
+                ContentType.MULTIPART_FORM_DATA, "test"));
+
+        JSONObject person = new JSONObject()
+                .put("name", "foo")
+                .put("age", 1);
+        postEntity.addPart("person", new StringBody(person.toString(), ContentType.APPLICATION_JSON));
 
         HttpEntity reqEntity = postEntity.build();
         httpPost.setEntity(reqEntity);

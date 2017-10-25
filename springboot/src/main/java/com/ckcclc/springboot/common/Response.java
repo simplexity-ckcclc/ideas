@@ -54,7 +54,6 @@ public class Response {
             String jsonString = JSON.toJSONString(result);
             jsonObject.put("result", jsonString);
         }
-        System.out.println(jsonObject.toJSONString());
         return jsonObject.toJSONString();
     }
 }
