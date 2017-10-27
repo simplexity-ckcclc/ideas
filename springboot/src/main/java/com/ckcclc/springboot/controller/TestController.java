@@ -58,31 +58,36 @@ public class TestController {
     }
 
     @RequestMapping("/successVal/{value}")
-    public String successVal(@PathVariable("value") String value) {
+    public ResponseEntity<Response> successVal(@PathVariable("value") String value) {
         Response response = new Response();
         Map<String, Object> map = new HashMap<>();
         map.put("foo", 1);
         map.put("bar", value);
         response.setResult(map);
-        return response.toString();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping("/exception")
-    public String exception() {
-        return new Response(ErrorCode.UNKNOWN).toString();
+    public ResponseEntity<String> exception() {
+        return new ResponseEntity<>(new Response(ErrorCode.UNKNOWN).toString(), HttpStatus.OK);
     }
 
     @RequestMapping("/success")
-    public String success() {
-        return new Response().toString();
+    public ResponseEntity<Response> success() {
+        return new ResponseEntity<>(new Response(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/multipart")
-    public String multipart(@RequestPart("file") MultipartFile file,
+    public ResponseEntity<Response> multipart(@RequestPart("file") MultipartFile file,
                             @RequestPart("person") Person person) {
         System.out.println(file.getName());
         System.out.println(person.getAge());
-        return new Response().toString();
+        return new ResponseEntity<>(new Response(), HttpStatus.OK);
+    }
+
+    @RequestMapping("/chinese")
+    public String chinese(@RequestParam String name) {
+        return "中文： " + name;
     }
 
 

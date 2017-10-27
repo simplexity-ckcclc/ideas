@@ -1,5 +1,6 @@
 package com.ckcclc.http;
 
+import com.google.common.base.Charsets;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
@@ -24,14 +26,19 @@ public class CloudClient {
     public static void main(String[] args) {
         CloseableHttpClient httpClient = HttpClientManager.getHttpClient();
 
-        HttpPost httpPost = new HttpPost("https://devinfo.tplinkcloud.com");
+//        HttpPost httpPost = new HttpPost("https://devinfo.tplinkcloud.com");
+//        JSONObject reqBody = new JSONObject()
+//                .put("method", "login")
+//                .put("params", new JSONObject()
+//                        .put("cloudUserName", "huangyucong@tp-link.net")
+//                        .put("cloudPassword", "141421")
+//                        .put("terminalUUID", UUID.randomUUID().toString())
+//                        .put("appType", "test"));
+
+        HttpPost httpPost = new HttpPost("http://127.0.0.1:8667/senseface/test");
         JSONObject reqBody = new JSONObject()
-                .put("method", "login")
-                .put("params", new JSONObject()
-                        .put("cloudUserName", "huangyucong@tp-link.net")
-                        .put("cloudPassword", "141421")
-                        .put("terminalUUID", UUID.randomUUID().toString())
-                        .put("appType", "test"));
+                .put("name", new String("中文".getBytes(), Charsets.UTF_8))
+                .put("age", 1);
 
         StringEntity entity = new StringEntity(reqBody.toString(), ContentType.APPLICATION_JSON);
         httpPost.setEntity(entity);
@@ -49,12 +56,13 @@ public class CloudClient {
 
             if (statusCode == HttpStatus.SC_OK) {
                 // success request
-                JSONObject bodyJSON = new JSONObject(body);
-                int errorCode = bodyJSON.getInt("error_code");
-                if (0 == errorCode) {
-                    String token = bodyJSON.getJSONObject("result").getString("token");
-                    logger.info("Get token: {}", token);
-                }
+                System.out.println(body);
+//                JSONObject bodyJSON = new JSONObject(body);
+//                int errorCode = bodyJSON.getInt("error_code");
+//                if (0 == errorCode) {
+//                    String token = bodyJSON.getJSONObject("result").getString("token");
+//                    logger.info("Get token: {}", token);
+//                }
             } else {
                 logger.warn("Failed to get token: [statusCode={}, body={}]", statusCode, body);
             }

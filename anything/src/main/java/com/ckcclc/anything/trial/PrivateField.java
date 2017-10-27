@@ -1,4 +1,4 @@
-package trial;
+package com.ckcclc.anything.trial;
 
 import java.lang.reflect.Field;
 

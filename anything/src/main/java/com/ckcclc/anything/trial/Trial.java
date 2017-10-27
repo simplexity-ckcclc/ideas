@@ -1,4 +1,4 @@
-package trial;
+package com.ckcclc.anything.trial;
 
 /**
  * Created by ckcclc on 18/08/2017.

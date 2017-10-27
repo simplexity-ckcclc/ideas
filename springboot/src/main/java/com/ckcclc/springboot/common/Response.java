@@ -6,11 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 /**
  * Created by ckcclc on 26/10/2017.
  */
-public class Response {
+public class Response<T> {
 
     private int code = 0;
     private String msg;
-    private Object result;
+    private T result;
 
     public Response() {
     }
@@ -40,20 +40,19 @@ public class Response {
         return result;
     }
 
-    public void setResult(Object result) {
+    public void setResult(T result) {
         this.result = result;
     }
 
     @Override
     public String toString() {
+        if (code == 0) {
+            return JSON.toJSONString(result);
+        }
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("error_code", code);
-        if (code != 0) {
-            jsonObject.put("msg", msg);
-        } else if (result != null){
-            String jsonString = JSON.toJSONString(result);
-            jsonObject.put("result", jsonString);
-        }
+        jsonObject.put("msg", msg);
         return jsonObject.toJSONString();
     }
 }

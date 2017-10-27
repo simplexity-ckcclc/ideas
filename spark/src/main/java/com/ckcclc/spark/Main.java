@@ -88,7 +88,7 @@ public class Main {
         notFound(new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
-                response.type("application/json");
+                response.type("application/com.ckcclc.anything.json");
                 return "{\"message\":\"Custom 404\"}";
             }
         });

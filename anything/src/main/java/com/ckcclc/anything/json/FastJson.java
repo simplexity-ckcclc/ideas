@@ -1,8 +1,10 @@
-package json;
+package com.ckcclc.anything.json;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -10,6 +12,8 @@ import java.util.Map;
  * Created by ckcclc on 26/10/2017.
  */
 public class FastJson {
+
+    public static final Logger logger = LoggerFactory.getLogger(FastJson.class);
     public static void main(String[] args) {
         Map<String, Object> data = Maps.newHashMap();
         data.put("a", "b");
@@ -23,6 +27,7 @@ public class FastJson {
         String jsonString = JSON.toJSONString(data);
         jsonObject.put("value", jsonString);
         String js = jsonObject.toJSONString();
+        logger.info("String {}", js);
         System.out.println(js);
 
         JSONObject jo = JSON.parseObject(js);

@@ -4,7 +4,7 @@
  * Created: 2017-2-14
  */
 
-package json;
+package com.ckcclc.anything.json;
 
 public enum MsgLevel {
 

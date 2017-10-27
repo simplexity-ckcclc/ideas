@@ -14,7 +14,7 @@ public class Client {
 
     public static void main(String[] args) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add("Accept", "application/json");
+        headers.add("Accept", "application/com.ckcclc.anything.json");
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(null, headers);
 
         RestTemplate rest = new RestTemplate();
