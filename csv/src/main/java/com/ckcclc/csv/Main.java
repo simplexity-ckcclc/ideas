@@ -6,18 +6,24 @@
 
 package com.ckcclc.csv;
 
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.bean.*;
 import org.apache.commons.beanutils.PropertyUtils;
 
-import java.io.OutputStreamWriter;
+import java.io.*;
+import java.util.List;
 
 public class Main {
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws Exception {
-//        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        CSVToBean();
+    }
+
+
+    public static void BeanToCSV() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
 //
 //
 //        CsvWriter writer = new CsvWriter(out, ',', Charset.forName("utf-8"));
@@ -51,4 +57,29 @@ public class Main {
         System.out.println(PropertyUtils.isReadable(person, "name"));
         System.out.println(PropertyUtils.isReadable(person, "non"));
     }
+
+    public static void CSVToBean() throws Exception {
+        FileReader reader = new FileReader("/home/sensetime/IdeaProjects/github/ideas/csv/src/main/java/resources/test.csv");
+        List<Person> persons = mapToCSV(reader, Person.class);
+        System.out.println(persons.size());
+        for (Person person : persons) {
+            System.out.println(person.getName() + "." + person.getAge());
+        }
+    }
+
+    public static  <T> List<T> mapToCSV(Reader reader, Class<T> mapToClass) {
+        CsvToBean<T> csvToBean = new CsvToBean<T>();
+
+//        Map<String, String> columnMapping = new HashMap<>();
+//        Arrays.stream(mapToClass.getDeclaredFields()).forEach(field -> {
+//            columnMapping.put(field.getName(), field.getName());
+//        });
+
+        HeaderColumnNameMappingStrategy<T> strategy = new HeaderColumnNameMappingStrategy<T>();
+        strategy.setType(mapToClass);
+
+        CSVReader csvReader = new CSVReader(reader);
+        return csvToBean.parse(strategy, csvReader);
+    }
+
 }

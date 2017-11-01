@@ -1,20 +1,15 @@
 package com.ckcclc.springboot.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.ckcclc.springboot.common.ErrorCode;
 import com.ckcclc.springboot.common.Response;
 import com.ckcclc.springboot.dao.PersonMapper;
 import com.ckcclc.springboot.entity.Person;
 import com.ckcclc.springboot.entity.Target;
-
 import com.ckcclc.springboot.service.CacheService;
+import com.ckcclc.springboot.service.RetryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +29,9 @@ public class TestController {
 
     @Autowired
     private CacheService cacheService;
+
+    @Autowired
+    private RetryService retryService;
 
     @RequestMapping("/target")
     public String target(@RequestBody Target target) {
@@ -82,6 +80,16 @@ public class TestController {
                             @RequestPart("person") Person person) {
         System.out.println(file.getName());
         System.out.println(person.getAge());
+
+        return new ResponseEntity<>(new Response(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/multipart_params")
+    public ResponseEntity<Response> multipartParams(@RequestParam("file") MultipartFile file,
+                                                    @RequestParam("name") String name) {
+        System.out.println(file.getSize());
+        System.out.println(file.getOriginalFilename());
+        System.out.println(name);
         return new ResponseEntity<>(new Response(), HttpStatus.OK);
     }
 
@@ -90,5 +98,10 @@ public class TestController {
         return "中文： " + name;
     }
 
+    @RequestMapping("/retry/{name}")
+    public ResponseEntity<String> retry(@PathVariable String name) {
+        retryService.remoteCall(name);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

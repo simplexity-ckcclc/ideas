@@ -8,9 +8,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +36,8 @@ public class MultipartSender {
 //        String serverUrl = "http://127.0.0.1:15080/log/uploadDeviceLog" +
 //                "?deviceToken=1ea939db55014b28b4fdd4d653716990&deviceId=deviceid&deviceMac=mac" +
 //                "&tcsp=1.2&deviceModel=model&deviceHwVer=hwVer&fwId=fwId&fwVer=fwVer";
-        String serverUrl = "http://172.18.0.109:8667/senseface/targets";
+//        String serverUrl = "http://172.18.0.109:8667/senseface/targets";
+        String serverUrl = "http://127.0.0.1:10080/test/multipart_params";
 
         URI url = new URIBuilder(serverUrl).build();
 
@@ -49,11 +48,14 @@ public class MultipartSender {
         postEntity.addPart("file", new FileBody(new File("/home/sensetime/Pictures/test.jpg"),
                 ContentType.MULTIPART_FORM_DATA, "police.jpg"));
 
-        JSONObject person = new JSONObject()
-                .put("name", "foo")
-                .put("targetLibId", 14)
-                .put("identityId", "123456200010010010");
-        postEntity.addPart("target", new StringBody(person.toString(), ContentType.APPLICATION_JSON));
+//        JSONObject person = new JSONObject()
+//                .put("name", "foo")
+//                .put("targetLibId", 14)
+//                .put("identityId", "123456200010010010");
+//        postEntity.addPart("target", new StringBody(person.toString(), ContentType.APPLICATION_JSON));
+
+        postEntity.addTextBody("name", "foo");
+//        postEntity.addTextBody("target", new StringBody(person.toString(), ContentType.APPLICATION_JSON));
 
         HttpEntity reqEntity = postEntity.build();
         httpPost.setEntity(reqEntity);

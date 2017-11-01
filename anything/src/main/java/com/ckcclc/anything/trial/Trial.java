@@ -6,13 +6,21 @@ package com.ckcclc.anything.trial;
 public class Trial {
 
     public static void main(String[] args) {
-        Solution solution = new Solution();
+//        Solution solution = new Solution();
+//
+//        int[] A = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+//        System.out.println(solution.maxSubArray2(A));
+//
+//        String B = "abcdcb";
+//        System.out.println(solution.longestPalindrome(B));
 
-        int[] A = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
-        System.out.println(solution.maxSubArray2(A));
-
-        String B = "abcdcb";
-        System.out.println(solution.longestPalindrome(B));
+        int a = 1;
+        long b = 2L;
+        String c = "3";
+        System.out.println(String.valueOf(a));
+        System.out.println(String.valueOf(b));
+        System.out.println(String.valueOf(c));
+        System.out.println(String.valueOf(null));
 
     }
 

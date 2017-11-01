@@ -4,20 +4,11 @@
  * Created: 2017/3/9
  */
 
-package com.ckcclc.csv;
-
-import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvBindByPosition;
+package com.ckcclc.anything.xml;
 
 public class Person {
 
-    // position has precedence over name
-    @CsvBindByPosition(position = 0)
-    @CsvBindByName(column = "upper_name")
     private String name;
-
-    @CsvBindByPosition(position = 1)
-    @CsvBindByName(column = "upper_age")
     private int age;
 
     public Person() {
