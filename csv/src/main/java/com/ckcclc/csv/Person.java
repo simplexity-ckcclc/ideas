@@ -20,6 +20,9 @@ public class Person {
     @CsvBindByName(column = "upper_age")
     private int age;
 
+    public Person() {
+    }
+
     public Person(String name, int age) {
         this.name = name;
         this.age = age;

@@ -1,16 +1,22 @@
-package com.ckcclc.springboot.entity;
-
 /**
- * Created by ckcclc on 21/10/2017.
+ * Copyright (c) 2017, TP-Link Co.,Ltd.
+ * Author:  huangyucong <huangyucong@tp-link.com.cn>
+ * Created: 2017/3/9
  */
-public class Target {
+
+package com.ckcclc.anything.xml;
+
+public class Person {
 
     private String name;
     private int age;
-    private Person person;
 
+    public Person() {
+    }
 
-    public Target() {
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
     }
 
     public String getName() {
@@ -27,13 +33,5 @@ public class Target {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 }

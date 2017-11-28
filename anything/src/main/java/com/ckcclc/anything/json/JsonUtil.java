@@ -4,7 +4,7 @@
  * Created: 2017/2/28
  */
 
-package json;
+package com.ckcclc.anything.json;
 
 import com.google.gson.*;
 
@@ -28,7 +28,7 @@ public class JsonUtil {
         String json = JsonUtil.toJson(message);
         System.out.println(json);
 
-//        Map<String, Serializable> map = JsonUtil.fromJson(json, Map.class);
+//        Map<String, Serializable> map = JsonUtil.fromJson(com.ckcclc.anything.json, Map.class);
 //        System.out.println(map);
 //        System.out.println(map);
 //        for (Map.Entry entry : map.entrySet()) {
@@ -88,7 +88,7 @@ public class JsonUtil {
     }
 
     /**
-     * convert java bean Seriable to json string
+     * convert java bean Seriable to com.ckcclc.anything.json string
      * @param object java bean
      * @return
      */
@@ -106,16 +106,16 @@ public class JsonUtil {
     }
 
     /**
-     * convert json string to json bean
-     * @param json json string
-     * @param classOfT Class of json bean
+     * convert com.ckcclc.anything.json string to com.ckcclc.anything.json bean
+     * @param json com.ckcclc.anything.json string
+     * @param classOfT Class of com.ckcclc.anything.json bean
      * @return
      * @throws JsonSyntaxException
      */
     public static <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException {
         Gson gson = new GsonBuilder().registerTypeAdapter(MalMessage.class, new MsgDeserializer()).create();
         return gson.fromJson(json, classOfT);
-//        return new Gson().fromJson(json, classOfT);
+//        return new Gson().fromJson(com.ckcclc.anything.json, classOfT);
     }
 
     public static Map toMap(Object object) {

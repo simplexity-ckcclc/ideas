@@ -4,7 +4,7 @@
  * Created: 2017-2-15
  */
 
-package json;
+package com.ckcclc.anything.json;
 
 import java.io.Serializable;
 import java.util.Map;
