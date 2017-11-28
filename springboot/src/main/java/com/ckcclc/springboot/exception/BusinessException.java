@@ -9,6 +9,10 @@ public class BusinessException extends Exception {
 
     private ErrorCode errorCode;
 
+    public BusinessException() {
+        super();
+    }
+
     BusinessException(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }

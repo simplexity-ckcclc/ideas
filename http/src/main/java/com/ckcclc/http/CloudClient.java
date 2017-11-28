@@ -23,7 +23,7 @@ public class CloudClient {
     public static void main(String[] args) {
         CloseableHttpClient httpClient = HttpClientManager.getHttpClient();
 
-        HttpPost httpPost = new HttpPost("http://127.0.0.1:8667/senseface/test");
+        HttpPost httpPost = new HttpPost("http://127.0.0.1:10080/test/hold");
         JSONObject reqBody = new JSONObject()
                 .put("name", new String("中文".getBytes(), Charsets.UTF_8))
                 .put("age", 1);
@@ -42,8 +42,6 @@ public class CloudClient {
         } catch (IOException e) {
             logger.error("Failed to execute http request", e);
         }
-
-
     }
 
 }

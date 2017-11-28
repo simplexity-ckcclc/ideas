@@ -1,5 +1,8 @@
 package com.ckcclc.anything.trial;
 
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+
 /**
  * Created by ckcclc on 18/08/2017.
  */
@@ -86,4 +89,47 @@ class Solution {
         }
         return s.substring(begin + 1, end);
     }
+
+
+
+    public void set(String key, String value) {
+        excute(jedis -> jedis.set(key, value));
+    }
+
+
+
+    public void excute(Action action) {
+        Jedis jedis = new JedisPool().getResource();
+        try {
+            action.act(jedis);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (null != jedis) jedis.close();
+        }
+    }
+
+    public <T> T excuteReturn(ActionReturn<T> actionReturn) {
+        Jedis jedis = new JedisPool().getResource();
+        try {
+            return actionReturn.act(jedis);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (null != jedis) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+}
+
+interface Action {
+    void act(Jedis jedis);
+}
+
+
+interface ActionReturn<T> {
+    T act(Jedis jedis);
 }

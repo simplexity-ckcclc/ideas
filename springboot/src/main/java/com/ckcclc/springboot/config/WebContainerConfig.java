@@ -25,7 +25,7 @@ public class WebContainerConfig {
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
         TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
-        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
+//        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
         return tomcat;
     }
 

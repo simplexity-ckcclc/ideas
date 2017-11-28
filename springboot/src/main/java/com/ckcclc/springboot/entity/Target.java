@@ -7,6 +7,8 @@ public class Target {
 
     private String name;
     private int age;
+    private Person person;
+
 
     public Target() {
     }
@@ -25,5 +27,13 @@ public class Target {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

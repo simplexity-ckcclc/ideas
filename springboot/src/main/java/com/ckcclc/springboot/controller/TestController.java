@@ -1,20 +1,29 @@
 package com.ckcclc.springboot.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.ckcclc.springboot.common.ErrorCode;
 import com.ckcclc.springboot.common.Response;
 import com.ckcclc.springboot.dao.PersonMapper;
+import com.ckcclc.springboot.entity.Face;
+import com.ckcclc.springboot.entity.People;
 import com.ckcclc.springboot.entity.Person;
 import com.ckcclc.springboot.entity.Target;
+import com.ckcclc.springboot.exception.BusinessException;
 import com.ckcclc.springboot.service.CacheService;
 import com.ckcclc.springboot.service.RetryService;
+import com.thoughtworks.xstream.XStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ckcclc on 21/10/2017.
@@ -36,6 +45,11 @@ public class TestController {
     @RequestMapping("/target")
     public String target(@RequestBody Target target) {
         return target.getName() + "." + String.valueOf(target.getAge());
+    }
+
+    @RequestMapping("/targetperson")
+    public String targetPerson(@RequestBody Target target) {
+        return target.getPerson().getName() + "." + String.valueOf(target.getPerson().getAge());
     }
 
     @RequestMapping("/person/{name}")
@@ -101,6 +115,48 @@ public class TestController {
     @RequestMapping("/retry/{name}")
     public ResponseEntity<String> retry(@PathVariable String name) {
         retryService.remoteCall(name);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/xml", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<?> xml() {
+        People people = new People();
+        people.setPeopleId("foo");
+        Face face1 = new Face();
+        face1.setFaceId("bar");
+        face1.setState("ok");
+
+        Face face2 = new Face();
+        face2.setFaceId("foobar");
+        face2.setState("ok");
+
+        List<Face> faceList = new ArrayList<>();
+        faceList.add(face1);
+        faceList.add(face2);
+        people.setFaceList(faceList);
+
+        XStream xstream = new XStream(); // DomDriver and StaxDriver instances also can be used with constructor
+        xstream.alias("people", People.class); // this will remove the Country class package name
+        xstream.alias("face", Face.class); // this will remove the Country class package name
+        return new ResponseEntity<>(xstream.toXML(people), HttpStatus.OK);
+    }
+
+    @RequestMapping("/throw")
+    public ResponseEntity<String> throwException(@RequestParam String name) throws Exception {
+        throw new BusinessException();
+    }
+
+
+    @RequestMapping("/hold")
+    public ResponseEntity<String> hold() throws Exception {
+        System.out.println("receive request");
+        TimeUnit.SECONDS.sleep(10);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping("/sensetime/alarm")
+    public ResponseEntity<String> alarm(@RequestBody Map<String, Object> params) throws Exception {
+        System.out.println(JSON.toJSONString(params));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
