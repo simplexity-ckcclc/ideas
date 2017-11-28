@@ -17,8 +17,8 @@ public class Test {
 
             String localname = ia.getHostName();
             String localip = ia.getHostAddress();
-            System.out.println("ip" + localname);
-            System.out.println("ip" + localip);
+            System.out.println("local name" + localname);
+            System.out.println("local ip" + localip);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
