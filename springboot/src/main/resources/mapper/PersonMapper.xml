@@ -22,4 +22,14 @@
     </select>
 
 
+    <insert id="insertPersons">
+		INSERT INTO person
+			(name, country, age)
+		VALUES
+		    <foreach collection="ages" item="item" index="index" separator=",">
+                (#{name},#{country},#{item})
+            </foreach>
+    </insert>
+
+
 </mapper>

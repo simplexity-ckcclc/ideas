@@ -1,12 +1,17 @@
 package com.ckcclc.springboot.entity;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Created by ckcclc on 21/10/2017.
  */
 public class Target {
 
+    @ApiModelProperty(notes = "target name")
     private String name;
+    @ApiModelProperty(notes = "target age")
     private int age;
+    @ApiModelProperty(notes = "target person properties")
     private Person person;
 
 

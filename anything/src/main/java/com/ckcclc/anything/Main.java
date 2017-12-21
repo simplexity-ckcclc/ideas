@@ -19,7 +19,8 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws SocketException {
-        System.out.println(getLocalIPv4Address().getHostAddress());
+//        System.out.println(getLocalIPv4Address().getHostAddress());
+        System.out.println(Main.class.getResource("/").getFile());
     }
 
     public static InetAddress getLocalIPv4Address() throws SocketException {

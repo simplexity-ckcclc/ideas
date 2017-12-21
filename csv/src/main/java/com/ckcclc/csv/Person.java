@@ -13,11 +13,11 @@ public class Person {
 
     // position has precedence over name
     @CsvBindByPosition(position = 0)
-    @CsvBindByName(column = "upper_name")
+    @CsvBindByName(column = "姓名")
     private String name;
 
     @CsvBindByPosition(position = 1)
-    @CsvBindByName(column = "upper_age")
+    @CsvBindByName(column = "年龄")
     private int age;
 
     public Person() {

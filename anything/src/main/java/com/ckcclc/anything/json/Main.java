@@ -7,12 +7,27 @@ package com.ckcclc.anything.json;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        final String CAPTURE_REPO = "%s_sfcptl";
+        String captureRepoName = String.format(CAPTURE_REPO, /*calcMouth()*/"201704");
+        System.out.println(captureRepoName);
+    }
+
+    private static void async() throws InterruptedException {
+        AsyncService service = new AsyncService();
+        service.async();
+        System.out.println("back");
+        TimeUnit.SECONDS.sleep(1);
+        System.out.println("finish");
+    }
+
+    private static void peopleRemark() {
         PeopleRemark remark = new PeopleRemark();
         try {
             remark.setBornTime(DATE_FORMATTER.parse("2000-10-01"));

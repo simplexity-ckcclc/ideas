@@ -11,7 +11,10 @@ import com.opencsv.CSVWriter;
 import com.opencsv.bean.*;
 import org.apache.commons.beanutils.PropertyUtils;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.FileReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.util.List;
 
 public class Main {
@@ -60,26 +63,46 @@ public class Main {
 
     public static void CSVToBean() throws Exception {
         FileReader reader = new FileReader("/home/sensetime/IdeaProjects/github/ideas/csv/src/main/java/resources/test.csv");
-        List<Person> persons = mapToCSV(reader, Person.class);
+        List<Person> persons = mapToCSV(reader, Person.class, SensefaceMappingStrategy.HEADER_NAME);
         System.out.println(persons.size());
         for (Person person : persons) {
             System.out.println(person.getName() + "." + person.getAge());
         }
     }
 
-    public static  <T> List<T> mapToCSV(Reader reader, Class<T> mapToClass) {
-        CsvToBean<T> csvToBean = new CsvToBean<T>();
+    public static  <T> List<T> mapToCSV(Reader reader, Class<T> mapToClass, SensefaceMappingStrategy strategy) {
+        CsvToBean<T> csvToBean = new CsvToBean<>();
 
 //        Map<String, String> columnMapping = new HashMap<>();
 //        Arrays.stream(mapToClass.getDeclaredFields()).forEach(field -> {
 //            columnMapping.put(field.getName(), field.getName());
 //        });
 
-        HeaderColumnNameMappingStrategy<T> strategy = new HeaderColumnNameMappingStrategy<T>();
-        strategy.setType(mapToClass);
+        HeaderColumnNameMappingStrategy<T> mappingStrategy = null;
+        switch (strategy) {
+            case HEADER_NAME:
+                mappingStrategy = new HeaderColumnNameMappingStrategy<>();
+                break;
+            case COLUME_POSITION:
+                mappingStrategy = new ColumnPositionMappingStrategy<>();
+                break;
+            default:
+                mappingStrategy = guessStratyge(mapToClass);
+                break;
+        }
+
+        mappingStrategy.setType(mapToClass);
 
         CSVReader csvReader = new CSVReader(reader);
-        return csvToBean.parse(strategy, csvReader);
+        return csvToBean.parse(mappingStrategy, csvReader);
     }
 
+    private static HeaderColumnNameMappingStrategy guessStratyge(Class mapToClass) {
+        return null;
+    }
+
+    enum SensefaceMappingStrategy {
+
+        HEADER_NAME, COLUME_POSITION;
+    }
 }

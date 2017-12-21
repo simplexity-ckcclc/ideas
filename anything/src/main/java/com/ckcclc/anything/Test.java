@@ -5,11 +5,25 @@
 
 package com.ckcclc.anything;
 
+import com.ckcclc.anything.json.PeopleRemark;
+
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        reflect();
+    }
+
+    private static void reflect() throws NoSuchMethodException {
+        Class clz = PeopleRemark.class;
+        Method method = clz.getMethod("toJSonString");
+        System.out.println(method.getDeclaringClass());
+        System.out.println(Object.class.equals(method.getDeclaringClass()));
+    }
+
+    private static void ipAddr() {
         // TODO Auto-generated method stub
         InetAddress ia = null;
         try {

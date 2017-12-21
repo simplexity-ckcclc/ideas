@@ -12,6 +12,9 @@ import com.ckcclc.springboot.exception.BusinessException;
 import com.ckcclc.springboot.service.CacheService;
 import com.ckcclc.springboot.service.RetryService;
 import com.thoughtworks.xstream.XStream;
+import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,12 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.activation.MimeType;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by ckcclc on 21/10/2017.
@@ -32,7 +32,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test")
+@Api(value="test-controller", description="Operations of Testing")
 public class TestController {
+
+    private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
     @Autowired
     private PersonMapper personMapper;
@@ -43,7 +46,7 @@ public class TestController {
     @Autowired
     private RetryService retryService;
 
-    @RequestMapping("/target")
+    @RequestMapping(value = "/target", method = RequestMethod.POST)
     public String target(@RequestBody Target target) {
         return target.getName() + "." + String.valueOf(target.getAge());
     }
@@ -53,35 +56,40 @@ public class TestController {
 //        return personMapper.findByName(name);
 //    }
 
-    @RequestMapping("/targetperson")
+    @RequestMapping(value = "/targetperson", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String targetPerson(@RequestBody Target target) {
         return target.getPerson().getName() + "." + String.valueOf(target.getPerson().getAge());
     }
 
-    @RequestMapping("/person/{name}")
+    @RequestMapping(value = "/target", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Target getTarget(@RequestParam(name = "name", required = false) String name) {
+        return new Target();
+    }
+
+    @RequestMapping(value = "/person/{name}", method = RequestMethod.GET)
     public Person personName(@PathVariable("name") String name) {
         return personMapper.findByName(name);
     }
 
-    @RequestMapping("/cache/set/{key}/{value}")
+    @RequestMapping(value = "/cache/set/{key}/{value}", method = RequestMethod.PUT)
     public ResponseEntity<?> cacheSet(@PathVariable String key, @PathVariable String value) {
         cacheService.set(key, value);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping("/cache/get/{key}")
+    @RequestMapping(value = "/cache/get/{key}", method = RequestMethod.GET)
     public ResponseEntity<String> cacheGet(@PathVariable String key) {
         String country = cacheService.get(key);
         return new ResponseEntity<>(country, HttpStatus.OK);
     }
 
-    @RequestMapping("/cache/del/{key}")
+    @RequestMapping(value = "/cache/del/{key}", method = RequestMethod.DELETE)
     public ResponseEntity<?> cacheDelete(@PathVariable String key) {
         cacheService.del(key);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping("/successVal/{value}")
+    @RequestMapping(value = "/successVal/{value}", method = RequestMethod.POST)
     public ResponseEntity<Response> successVal(@PathVariable("value") String value) {
         Response response = new Response();
         Map<String, Object> map = new HashMap<>();
@@ -91,7 +99,7 @@ public class TestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping("/exception")
+    @RequestMapping(value = "/exception")
     public ResponseEntity<String> exception() {
         return new ResponseEntity<>(new Response(ErrorCode.UNKNOWN).toString(), HttpStatus.OK);
     }
@@ -101,7 +109,7 @@ public class TestController {
         return new ResponseEntity<>(new Response(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/multipart")
+    @RequestMapping(value = "/multipart", method = RequestMethod.POST)
     public ResponseEntity<Response> multipart(@RequestPart("file") MultipartFile file,
                             @RequestPart("person") Person person) {
         System.out.println(file.getName());
@@ -110,7 +118,7 @@ public class TestController {
         return new ResponseEntity<>(new Response(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/multipart_params")
+    @RequestMapping(value = "/multipart_params", method = RequestMethod.POST)
     public ResponseEntity<Response> multipartParams(@RequestParam("file") MultipartFile file,
                                                     @RequestParam("name") String name) {
         System.out.println(file.getSize());
@@ -119,12 +127,12 @@ public class TestController {
         return new ResponseEntity<>(new Response(), HttpStatus.OK);
     }
 
-    @RequestMapping("/chinese")
+    @RequestMapping(value = "/chinese", method = RequestMethod.POST)
     public String chinese(@RequestParam String name) {
         return "中文： " + name;
     }
 
-    @RequestMapping("/retry/{name}")
+    @RequestMapping(value = "/retry/{name}", method = RequestMethod.POST)
     public ResponseEntity<String> retry(@PathVariable String name) {
         retryService.remoteCall(name);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -159,16 +167,22 @@ public class TestController {
     }
 
 
-    @RequestMapping("/hold")
+    @RequestMapping(value = "/hold", method = RequestMethod.POST)
     public ResponseEntity<String> hold() throws Exception {
         System.out.println("receive request");
         TimeUnit.SECONDS.sleep(10);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping("/sensetime/alarm")
+    @RequestMapping(value = "/sensetime/alarm", method = RequestMethod.POST)
     public ResponseEntity<String> alarm(@RequestBody Map<String, Object> params) throws Exception {
         System.out.println(JSON.toJSONString(params));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/batch", method = RequestMethod.POST)
+    public ResponseEntity<String> batch() throws Exception {
+        personMapper.insertPersons("foobar", "country", Arrays.asList(1,2,3));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
