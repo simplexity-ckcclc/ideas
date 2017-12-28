@@ -19,6 +19,7 @@
         <module>hibernate</module>
         <module>hadoop</module>
         <module>elasticsearch</module>
+        <module>quartz</module>
     </modules>
 
     <properties>

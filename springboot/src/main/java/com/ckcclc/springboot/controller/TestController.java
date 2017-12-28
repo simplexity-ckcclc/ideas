@@ -10,6 +10,7 @@ import com.ckcclc.springboot.entity.Person;
 import com.ckcclc.springboot.entity.Target;
 import com.ckcclc.springboot.exception.BusinessException;
 import com.ckcclc.springboot.service.CacheService;
+import com.ckcclc.springboot.service.CrontabService;
 import com.ckcclc.springboot.service.RetryService;
 import com.thoughtworks.xstream.XStream;
 import io.swagger.annotations.Api;
@@ -45,6 +46,9 @@ public class TestController {
 
     @Autowired
     private RetryService retryService;
+
+    @Autowired
+    private CrontabService crontabService;
 
     @RequestMapping(value = "/target", method = RequestMethod.POST)
     public String target(@RequestBody Target target) {
@@ -163,7 +167,8 @@ public class TestController {
 
     @RequestMapping("/throw")
     public ResponseEntity<String> throwException(@RequestParam String name) throws Exception {
-        throw new BusinessException();
+//        throw new BusinessException();
+        throw new Exception();
     }
 
 

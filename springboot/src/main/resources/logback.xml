@@ -8,7 +8,7 @@
 
     <logger name="com.ckcclc.springboot" level="DEBUG"/>
 
-    <root level="INFO">
-        <appender-ref ref="stdout" />
+    <root level="WARN">
+        <appender-ref ref="stdout"/>
     </root>
 </configuration>

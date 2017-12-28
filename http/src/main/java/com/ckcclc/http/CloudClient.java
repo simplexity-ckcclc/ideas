@@ -23,7 +23,7 @@ public class CloudClient {
     public static void main(String[] args) {
         CloseableHttpClient httpClient = HttpClientManager.getHttpClient();
 
-        HttpPost httpPost = new HttpPost("http://127.0.0.1:10080/test/hold");
+        HttpPost httpPost = new HttpPost("http://127.0.0.1:10080/test/throw");
         JSONObject reqBody = new JSONObject()
                 .put("name", new String("中文".getBytes(), Charsets.UTF_8))
                 .put("age", 1);
@@ -34,11 +34,12 @@ public class CloudClient {
         try {
             // execute
             CloseableHttpResponse response = httpClient.execute(httpPost);
+            logger.info("Response={}", response);
 
             // get statusCode & body
             int statusCode = response.getStatusLine().getStatusCode();
             String body = EntityUtils.toString(response.getEntity());
-            logger.info("Response for get token: [statusCode={}, body={}]", statusCode, body);
+            logger.info("Response body: [statusCode={}, body={}]", statusCode, body);
         } catch (IOException e) {
             logger.error("Failed to execute http request", e);
         }

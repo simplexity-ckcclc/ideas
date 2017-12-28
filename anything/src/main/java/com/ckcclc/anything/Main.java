@@ -12,6 +12,9 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Enumeration;
 
 public class Main {
@@ -20,7 +23,14 @@ public class Main {
 
     public static void main(String[] args) throws SocketException {
 //        System.out.println(getLocalIPv4Address().getHostAddress());
-        System.out.println(Main.class.getResource("/").getFile());
+//        System.out.println(Main.class.getResource("/").getFile());
+        System.out.println(Instant.now().toString());
+        System.out.println(new Date());
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+    }
+
+    private static void utc() {
+//        DateTime now = DateTime.now( DateTimeZone.UTC );
     }
 
     public static InetAddress getLocalIPv4Address() throws SocketException {
