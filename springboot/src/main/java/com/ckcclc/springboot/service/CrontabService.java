@@ -6,7 +6,6 @@
 package com.ckcclc.springboot.service;
 
 import com.ckcclc.springboot.common.cron.CronTimeTask;
-import com.ckcclc.springboot.common.cron.Listener;
 import com.ckcclc.springboot.common.cron.TaskListener;
 import com.cronutils.builder.CronBuilder;
 import com.cronutils.model.Cron;
@@ -26,13 +25,16 @@ import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 
 import static com.cronutils.model.field.expression.FieldExpression.questionMark;
-import static com.cronutils.model.field.expression.FieldExpressionFactory.*;
+import static com.cronutils.model.field.expression.FieldExpressionFactory.always;
+import static com.cronutils.model.field.expression.FieldExpressionFactory.every;
+import static com.cronutils.model.field.expression.FieldExpressionFactory.on;
 
 @Component
 public class CrontabService implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(CrontabService.class);
 
+    private static final Object lock = new Object();
     private ThreadPoolTaskScheduler scheduler = null;
     private ScheduledFuture<?> future = null;
     private Map<Integer, Set<ScheduledFuture>> taskMap = Maps.newConcurrentMap();
@@ -62,43 +64,49 @@ public class CrontabService implements InitializingBean {
         future =  scheduler.schedule(this::execute, new CronTrigger(cron));
     }
 
-    public void scheduleTask(int taskId, int second, int minute) {
+    public void scheduleTask(int requestId, int second, int minute) {
         Date start = new Date();
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, 30);
+        calendar.add(Calendar.MINUTE, 5);
         Date end = calendar.getTime();
-        Listener listener = new TaskListener(taskMap, taskId, end);
+        TaskListener listener = new TaskListener(requestId, taskMap, end);
         CronTimeTask task = new CronTimeTask(start, end);
         task.setListener(listener);
 
+        // 1. create cron expression
         Cron cron = CronBuilder.cron(CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ))
-                .withDoW(on(Weekdays.THURSDAY.getWeekday()).and(on(Weekdays.FRIDAY.getWeekday())))
+                .withDoW(on(Weekdays.THURSDAY.getWeekday())
+                        .and(on(Weekdays.FRIDAY.getWeekday())))
                 .withMonth(always())
                 .withDoM(questionMark())
                 .withHour(always())
-                .withMinute(on(minute))
+                .withMinute(every(2))
                 .withSecond(on(second))
                 .instance();
+        logger.info("cron expression:{}", cron.asString());
 
+        // 2. create new cron tasks
         Set<ScheduledFuture> newFutures = new HashSet<>();
         ScheduledFuture newFuture = scheduler.schedule(task, new CronTrigger(cron.asString()));
         newFutures.add(newFuture);
+        listener.setFuture(newFuture);
 
-        Set<ScheduledFuture> futures = taskMap.get(taskId);
-        if (futures != null && !futures.isEmpty()) {
-            synchronized (futures) {
-                for (ScheduledFuture future : futures) {
-                    future.cancel(true);
-                }
-                futures.clear();
+        // 3. cancel old tasks
+        synchronized (lock) {
+            Set<ScheduledFuture> futures = taskMap.get(requestId);
+            if (futures != null && !futures.isEmpty()) {
+                    for (ScheduledFuture future : futures) {
+                        future.cancel(true);
+                    }
+                    futures.clear();
             }
+            taskMap.put(requestId, newFutures);
+            logger.info("Cancel all old tasks and recreate new tasks for requestId:{}", requestId);
         }
-
-        taskMap.put(taskId, newFutures);
     }
 
     private void execute() {
-        logger.info("current time millis:{}", System.currentTimeMillis());
+        logger.info("current time:{}", new Date());
     }
 
 }

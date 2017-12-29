@@ -34,11 +34,11 @@ public class CronController {
 
     @RequestMapping(value = "/cronTask", method = RequestMethod.POST)
     public ResponseEntity<String> cronTask(@RequestBody Map<String, Object> params) throws Exception {
-        Integer taskId = (Integer) params.get("taskId");
+        Integer requestId = (Integer) params.get("requestId");
 //        String cron = (String) params.get("cron");
         int minute = (Integer) params.get("minute");
         int second = (Integer) params.get("second");
-        crontabService.scheduleTask(taskId, second, minute);
+        crontabService.scheduleTask(requestId, second, minute);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

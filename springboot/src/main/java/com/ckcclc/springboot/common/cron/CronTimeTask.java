@@ -20,6 +20,6 @@ public class CronTimeTask extends AbstractTimeRangeTask {
 
     @Override
     void execute() {
-        logger.info("Cron time task execute, current time millis:{}", System.currentTimeMillis());
+        logger.info("Cron time task execute, current time:{}", new Date());
     }
 }
