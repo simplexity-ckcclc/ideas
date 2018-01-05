@@ -5,9 +5,11 @@
 
 package com.ckcclc.anything;
 
+import com.ckcclc.anything.json.PeopleRemark;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -16,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Random;
 
 public class Main {
 
@@ -59,5 +62,33 @@ public class Main {
             }
         }
         return ip;
+    }
+
+    private static void stream() {
+        Random random = new Random();
+        random.ints().limit(10).forEach(System.out::println);
+    }
+
+    private static void reflect() throws NoSuchMethodException {
+        Class clz = PeopleRemark.class;
+        Method method = clz.getMethod("toJSonString");
+        System.out.println(method.getDeclaringClass());
+        System.out.println(Object.class.equals(method.getDeclaringClass()));
+    }
+
+    private static void ipAddr() {
+        // TODO Auto-generated method stub
+        InetAddress ia = null;
+        try {
+            ia = ia.getLocalHost();
+
+            String localname = ia.getHostName();
+            String localip = ia.getHostAddress();
+            System.out.println("local name" + localname);
+            System.out.println("local ip" + localip);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

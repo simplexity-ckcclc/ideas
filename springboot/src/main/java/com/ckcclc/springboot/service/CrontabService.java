@@ -88,8 +88,8 @@ public class CrontabService implements InitializingBean {
         // 2. create new cron tasks
         Set<ScheduledFuture> newFutures = new HashSet<>();
         ScheduledFuture newFuture = scheduler.schedule(task, new CronTrigger(cron.asString()));
-        newFutures.add(newFuture);
         listener.setFuture(newFuture);
+        newFutures.add(newFuture);
 
         // 3. cancel old tasks
         synchronized (lock) {

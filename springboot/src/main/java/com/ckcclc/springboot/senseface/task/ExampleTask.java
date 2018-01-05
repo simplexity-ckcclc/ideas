@@ -3,7 +3,7 @@
  * Created: 17-12-28
  */
 
-package com.ckcclc.springboot.common.cron;
+package com.ckcclc.springboot.senseface.task;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class CronTimeTask extends AbstractTimeRangeTask {
+public class ExampleTask extends AbstractTimeRangeTask {
 
-    private static final Logger logger = LoggerFactory.getLogger(CronTimeTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExampleTask.class);
 
-    public CronTimeTask(Date start, Date end) {
+    public ExampleTask(Date start, Date end) {
         super(start, end);
     }
 

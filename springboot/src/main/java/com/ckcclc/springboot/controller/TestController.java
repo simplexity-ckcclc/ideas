@@ -8,9 +8,7 @@ import com.ckcclc.springboot.entity.Face;
 import com.ckcclc.springboot.entity.People;
 import com.ckcclc.springboot.entity.Person;
 import com.ckcclc.springboot.entity.Target;
-import com.ckcclc.springboot.exception.BusinessException;
 import com.ckcclc.springboot.service.CacheService;
-import com.ckcclc.springboot.service.CrontabService;
 import com.ckcclc.springboot.service.RetryService;
 import com.thoughtworks.xstream.XStream;
 import io.swagger.annotations.Api;
@@ -23,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.activation.MimeType;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -46,9 +43,6 @@ public class TestController {
 
     @Autowired
     private RetryService retryService;
-
-    @Autowired
-    private CrontabService crontabService;
 
     @RequestMapping(value = "/target", method = RequestMethod.POST)
     public String target(@RequestBody Target target) {

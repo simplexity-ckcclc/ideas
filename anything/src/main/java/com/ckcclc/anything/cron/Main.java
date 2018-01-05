@@ -10,16 +10,19 @@ import com.cronutils.model.Cron;
 import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.field.expression.Weekdays;
+import com.cronutils.parser.CronParser;
 
 import static com.cronutils.model.field.expression.FieldExpressionFactory.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        create();
+        String cron = create();
+        validate(cron);
+
     }
 
-    private static void create() {
+    private static String create() {
 
         Cron cron = CronBuilder.cron(CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ))
 //                .withYear(always())
@@ -36,6 +39,13 @@ public class Main {
         // Obtain the string expression
         String cronAsString = cron.asString(); // 0 * * L-3 * ? *
         System.out.println(cronAsString);
+        return cronAsString;
+    }
+
+    private static void validate(String cron) {
+        CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ));
+        Cron quartzCron = parser.parse(cron);
+        quartzCron.validate();
     }
 }
 
