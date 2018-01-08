@@ -3,7 +3,7 @@
  * Created: 17-12-28
  */
 
-package com.ckcclc.springboot.senseface.core;
+package com.ckcclc.springboot.sense.core;
 
 public interface Listener {
 

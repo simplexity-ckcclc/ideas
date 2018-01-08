@@ -3,7 +3,7 @@
  * Created: 17-12-8
  */
 
-package com.ckcclc.springboot.senseface.common;
+package com.ckcclc.springboot.sense.common;
 
 import com.cronutils.model.Cron;
 import com.cronutils.model.CronType;
@@ -119,23 +119,26 @@ public class Checkers {
     }
 
     public <T> Checkers add(T object, Predicate<T> predicate) {
-        return this.addHolder(object, predicate);
+        return this.add(object, predicate, null);
+    }
+
+    public <T> Checkers add(T object, Predicate<T> predicate, String errorMsg) {
+        return this.addHolder(object, predicate, errorMsg);
     }
 
     /**
      * check parameters
      * @return true if check parameters pass
      */
-    public boolean check() {
+    public Result check() {
         PredicateHolder holder = holderHead;
         while (holder != null) {
             if (holder.predicate != null && !holder.predicate.test(holder.object)) {
-                logger.info("param:[{}] fail predicate test:[{}]", holder.object, holder.predicate.getClass().getSimpleName());
-                return false;
+                return new Result(holder.errorMsg);
             }
             holder = holder.next;
         }
-        return true;
+        return new Result();
     }
 
     private PredicateHolder addHolder() {
@@ -144,19 +147,45 @@ public class Checkers {
         return holder;
     }
 
-    private <T> Checkers addHolder(T object, Predicate predicate) {
+    private <T> Checkers addHolder(T object, Predicate predicate, String errorMsg) {
         PredicateHolder holder = this.addHolder();
         holder.object = object;
+        holder.errorMsg = errorMsg;
         holder.predicate = predicate;
         return this;
     }
 
     private final class PredicateHolder<T> {
         T object;
+        String errorMsg;
         Predicate predicate;
         PredicateHolder next;
 
         private PredicateHolder() {
         }
     }
+
+    public class Result {
+        boolean valid;
+        String errorMsg;
+
+        Result() {
+            this.valid = true;
+        }
+
+        Result(String errorMsg) {
+            this.valid = false;
+            this.errorMsg = errorMsg;
+        }
+
+        public boolean isValid() {
+            return valid;
+        }
+
+        public String getErrorMsg() {
+            return errorMsg;
+        }
+    }
+
 }
+

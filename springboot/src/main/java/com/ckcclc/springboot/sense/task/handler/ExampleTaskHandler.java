@@ -3,11 +3,13 @@
  * Created: 18-1-5
  */
 
-package com.ckcclc.springboot.senseface.task.handler;
+package com.ckcclc.springboot.sense.task.handler;
 
-import com.ckcclc.springboot.senseface.common.Checkers;
-import com.ckcclc.springboot.senseface.core.TaskFutureHolder;
-import com.ckcclc.springboot.senseface.task.ExampleTask;
+import com.ckcclc.springboot.sense.common.Checkers;
+import com.ckcclc.springboot.sense.common.ErrorCode;
+import com.ckcclc.springboot.sense.common.ServiceException;
+import com.ckcclc.springboot.sense.core.TaskFutureHolder;
+import com.ckcclc.springboot.sense.task.ExampleTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,17 +44,16 @@ public class ExampleTaskHandler {
         Boolean cancel = (Boolean) params.get("cancel");
 
         String format = "yyyy-MM-dd HH:mm:ss";
-        boolean isChecked = Checkers.newInstance()
-                .add(requestId, Checkers.StringChecker.isNotBlank())
-                .add(start, Checkers.DateChecker.isValid(format))
-                .add(end, Checkers.DateChecker.isValid(format))
-                .add(cron, Checkers.CronChecker.isValidQuartz())
-                .add(cancel, Checkers.notNull())
+        Checkers.Result result = Checkers.newInstance()
+                .add(requestId, Checkers.StringChecker.isNotBlank(), "requestId is blank")
+                .add(start, Checkers.DateChecker.isValid(format), "start is not valid date format")
+                .add(end, Checkers.DateChecker.isValid(format), "end is not valid date format")
+                .add(cron, Checkers.CronChecker.isValidQuartz(), "cron is not valid quartz cron expression")
+                .add(cancel, Checkers.notNull(), "cancel not provided")
                 .check();
-        if (!isChecked) {
-            // TODO: 18-1-5
-            logger.info("invalid params");
-            return;
+        if (!result.isValid()) {
+            logger.info("Params checking fail, error msg:{}", result.getErrorMsg());
+            throw new ServiceException(ErrorCode.REQUEST_PARAMETER_ERROR, result.getErrorMsg());
         }
 
         DateFormat df = new SimpleDateFormat(format);
@@ -60,14 +61,13 @@ public class ExampleTaskHandler {
         Date endDate = df.parse(end);
         Date now = new Date();
 
-        isChecked = Checkers.newInstance()
-            .add(now, Checkers.DateChecker.before(endDate))
-            .add(startDate, Checkers.DateChecker.before(endDate))
+        result = Checkers.newInstance()
+            .add(now, Checkers.DateChecker.before(endDate), "end is before current time")
+            .add(startDate, Checkers.DateChecker.before(endDate), "end is before start")
             .check();
-        if (!isChecked) {
-            // TODO: 18-1-5
-            logger.info("invalid params");
-            return;
+        if (!result.isValid()) {
+            logger.info("Params checking fail, error msg:{}", result.getErrorMsg());
+            throw new ServiceException(ErrorCode.REQUEST_PARAMETER_ERROR, result.getErrorMsg());
         }
 
         // 1. create new service tasks
@@ -96,12 +96,12 @@ public class ExampleTaskHandler {
     public void cancel(Map<String, Object> params) throws Exception {
         String requestId = (String) params.get("requestId");
 
-        boolean isChecked = Checkers.newInstance()
-                .add(requestId, Checkers.StringChecker.isNotBlank())
+        Checkers.Result result = Checkers.newInstance()
+                .add(requestId, Checkers.StringChecker.isNotBlank(), "requestId is blank")
                 .check();
-        if (!isChecked) {
-            // TODO: 18-1-5
-            logger.info("invalid params");
+        if (!result.isValid()) {
+            logger.info("Params checking fail, error msg:{}", result.getErrorMsg());
+            throw new ServiceException(ErrorCode.REQUEST_PARAMETER_ERROR, result.getErrorMsg());
         }
 
         String taskId = taskId(requestId);

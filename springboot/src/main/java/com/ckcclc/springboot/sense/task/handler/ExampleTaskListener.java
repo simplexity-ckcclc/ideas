@@ -3,10 +3,10 @@
  * Created: 17-12-28
  */
 
-package com.ckcclc.springboot.senseface.task.handler;
+package com.ckcclc.springboot.sense.task.handler;
 
-import com.ckcclc.springboot.senseface.core.Listener;
-import com.ckcclc.springboot.senseface.core.TaskFutureHolder;
+import com.ckcclc.springboot.sense.core.Listener;
+import com.ckcclc.springboot.sense.core.TaskFutureHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -18,8 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.servlet.http.HttpServletRequest;
 
-//@ControllerAdvice(annotations=RestController.class)
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.ckcclc.springboot.controller")
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);

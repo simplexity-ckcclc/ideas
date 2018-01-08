@@ -3,9 +3,9 @@
  * Created: 17-12-28
  */
 
-package com.ckcclc.springboot.senseface.task;
+package com.ckcclc.springboot.sense.task;
 
-import com.ckcclc.springboot.senseface.core.Listener;
+import com.ckcclc.springboot.sense.core.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

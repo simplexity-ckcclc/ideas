@@ -3,7 +3,7 @@
  * Created: 18-1-5
  */
 
-package com.ckcclc.springboot.senseface.core;
+package com.ckcclc.springboot.sense.core;
 
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -36,7 +36,7 @@ public class SenseTaskScheduler implements InitializingBean, FactoryBean<TaskSch
 
     @Override
     public Class<?> getObjectType() {
-        return scheduler.getClass();
+        return TaskScheduler.class;
     }
 
     @Override

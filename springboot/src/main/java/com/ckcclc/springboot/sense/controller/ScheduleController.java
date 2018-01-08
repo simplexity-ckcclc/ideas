@@ -3,11 +3,12 @@
  * Created: 18-1-3
  */
 
-package com.ckcclc.springboot.senseface.controller;
+package com.ckcclc.springboot.sense.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ckcclc.springboot.senseface.service.impl.ScheduleServiceImpl;
-import com.ckcclc.springboot.senseface.vo.ScheduleRequest;
+import com.ckcclc.springboot.sense.common.Response;
+import com.ckcclc.springboot.sense.service.impl.ScheduleServiceImpl;
+import com.ckcclc.springboot.sense.vo.ScheduleRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -22,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/scheduled")
-@Api(value = "/scheduled")
+@RequestMapping("/sense")
+@Api(value = "/sense")
 public class ScheduleController {
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
@@ -31,11 +32,14 @@ public class ScheduleController {
     @Autowired
     private ScheduleServiceImpl scheduleService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/schedule", method = RequestMethod.POST)
     @ApiOperation(value = "调度任务", notes = "调度任务", httpMethod = "POST", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> schedule(@RequestBody ScheduleRequest request) throws Exception {
-        logger.info("[Request] invoke service task of params:{}", JSONObject.toJSONString(request));
+        logger.debug("[Request] schedule task of request params:{}", JSONObject.toJSONString(request));
         scheduleService.schedule(request.getEventType(), request.getParams());
-        return new ResponseEntity<>(HttpStatus.OK);
+        Response response = new Response();
+        logger.info("[Response] schedule task of request params:{}, response:{}",
+                JSONObject.toJSONString(request), response);
+        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     }
 }

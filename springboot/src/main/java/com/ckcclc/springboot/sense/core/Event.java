@@ -3,7 +3,7 @@
  * Created: 18-1-5
  */
 
-package com.ckcclc.springboot.senseface.core;
+package com.ckcclc.springboot.sense.core;
 
 import com.google.common.collect.Maps;
 
