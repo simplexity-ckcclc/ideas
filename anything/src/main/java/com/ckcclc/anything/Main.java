@@ -6,6 +6,7 @@
 package com.ckcclc.anything;
 
 import com.ckcclc.anything.json.PeopleRemark;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,11 +15,9 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -27,9 +26,10 @@ public class Main {
     public static void main(String[] args) throws SocketException {
 //        System.out.println(getLocalIPv4Address().getHostAddress());
 //        System.out.println(Main.class.getResource("/").getFile());
-        System.out.println(Instant.now().toString());
-        System.out.println(new Date());
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+//        System.out.println(Instant.now().toString());
+//        System.out.println(new Date());
+//        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        streamNull();
     }
 
     private static void utc() {
@@ -90,5 +90,24 @@ public class Main {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private static void streamNull() {
+        List<String> list = Arrays.asList("foo", "");
+        System.out.println("foo and 'blank': " + list.stream().filter(StringUtils::isNotBlank).collect(Collectors.joining(",")));
+
+        List<String> list2 = Arrays.asList("", "");
+        System.out.println("'blank' and 'blank': " + list2.stream().filter(StringUtils::isNotBlank).collect(Collectors.joining(",")));
+
+        List<String> list3 = Arrays.asList("foo", null);
+        System.out.println("foo and 'null': " + list3.stream().filter(StringUtils::isNotBlank).collect(Collectors.joining(",")));
+
+        List<String> list4 = Arrays.asList(null, null);
+        System.out.println("'null' and 'null': " + list4.stream().filter(StringUtils::isNotBlank).collect(Collectors.joining(",")));
+
+        String string = Stream.of(null, null, null, null).
+                filter(Objects::nonNull).map(String::valueOf).collect(Collectors.joining(","));
+        System.out.println(string);
+        System.out.println(StringUtils.isNotBlank(string));
     }
 }

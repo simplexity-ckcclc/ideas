@@ -18,7 +18,8 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
-        futureGetBlock();
+//        futureGetBlock();
+        futureThrowException();
     }
 
     private static void futureGetBlock() throws Exception {
@@ -35,6 +36,21 @@ public class Main {
 
     private static void concurrentHashMap() {
         Map<String, Object> map = Maps.newConcurrentMap();
+    }
+
+    // exception throw in future task will be caught in Future::get
+    private static void futureThrowException() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<Boolean> future = executorService.submit(() -> {throw new RuntimeException("Test Exception");});
+        try {
+            if (future.get(1, TimeUnit.SECONDS)) {
+                logger.info("succeed");
+            }
+        } catch (Exception e) {
+            logger.error("exception caught", e);
+        }
+
+        logger.info("finished");
     }
 
 }
