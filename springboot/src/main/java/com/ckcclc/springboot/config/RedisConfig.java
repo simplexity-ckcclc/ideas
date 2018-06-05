@@ -5,7 +5,6 @@
 
 package com.ckcclc.springboot.config;
 
-import com.sensetime.engineering.sebw.fs.fastdfs.FastDfsFileSystemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;

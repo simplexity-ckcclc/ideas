@@ -125,13 +125,14 @@ public class MysqlClient {
         }
 
         entity.setCity(city);
-        dao.getCommonDAO().saveOrUpdate(entity);
+//        dao.getCommonDAO().saveOrUpdate(entity);
     }
 
     public static TestEntity findByNameAndAge(DeviceValidateErrorDao dao, String name, Integer age) {
         DetachedCriteria criteria = DetachedCriteria.forClass(TestEntity.class)
                 .add(Restrictions.eq("name", name))
                 .add(Restrictions.eq("age", age));
-        return dao.getCommonDAO().findByCriteriaUnique(criteria, TestEntity.class);
+        return null;
+//        return dao.getCommonDAO().findByCriteriaUnique(criteria, TestEntity.class);
     }
 }

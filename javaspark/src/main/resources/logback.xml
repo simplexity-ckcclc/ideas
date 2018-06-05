@@ -6,9 +6,9 @@
         </encoder >
     </appender>
 
-    <logger name="com.ckcclc.spark" level="DEBUG"/>
+    <logger name="com.ckcclc.javaspark" level="DEBUG"/>
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="stdout" />
     </root>
 </configuration>
