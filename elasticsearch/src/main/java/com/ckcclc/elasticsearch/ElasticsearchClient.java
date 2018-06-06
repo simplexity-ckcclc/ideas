@@ -1,6 +1,7 @@
 package com.ckcclc.elasticsearch;
 
 import com.alibaba.fastjson.JSON;
+
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -11,7 +12,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
@@ -82,7 +83,7 @@ public class ElasticsearchClient {
 			for (String node : nodes) {
 				if (StringUtils.isNotBlank(node)) {
 					String[] hostPort = node.split(":");
-					client.addTransportAddresses(new InetSocketTransportAddress(InetAddress.getByName(hostPort[0]),
+					client.addTransportAddresses(new TransportAddress(InetAddress.getByName(hostPort[0]),
 							Integer.parseInt(hostPort[1])));
 				}
 			}
@@ -123,7 +124,7 @@ public class ElasticsearchClient {
 					// 提交结束后调用（无论成功或失败）
 					// System.out.println(new Date().toString() +
 					// "response.hasFailures=" + response.hasFailures());
-					logger.debug("提交" + response.getItems().length + "个文档，用时" + response.getTookInMillis() + "MS"
+					logger.debug("提交" + response.getItems().length + "个文档，用时" + response.getIngestTookInMillis() + "MS"
 							+ (response.hasFailures() ? " 有文档提交失败！" : ""));
 					// response.hasFailures();//是否有提交失败
 				}

@@ -7,62 +7,63 @@ package com.ckcclc.hibernate.dao;
 
 import com.ckcclc.hibernate.config.DbConfig;
 import com.ckcclc.hibernate.entity.DeviceValidateErrorEntity;
-import com.ckcclc.hibernate.entity.TestEntity;
-import com.tplink.cloud.common.database.CommonConfiguration;
-import com.tplink.cloud.common.database.CommonDAO;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+//import com.tplink.cloud.common.database.CommonConfiguration;
+//import com.tplink.cloud.common.database.CommonDAO;
+
 public class DeviceValidateErrorDao {
 
-    private CommonDAO commonDAO;
+//    private CommonDAO commonDAO;
 
     public DeviceValidateErrorDao(DbConfig dbConfig) {
-
-        CommonConfiguration configuration = getCloudConfiguration(dbConfig);
-        commonDAO = new CommonDAO(configuration);
+//        CommonConfiguration configuration = getCloudConfiguration(dbConfig);
+//        commonDAO = new CommonDAO(configuration);
     }
 
-    private CommonConfiguration getCloudConfiguration(DbConfig config) {
-        Class[] classes = new Class[]{
-                DeviceValidateErrorEntity.class,
-                TestEntity.class,
-        };
+//    private CommonConfiguration getCloudConfiguration(DbConfig config) {
+//        Class[] classes = new Class[]{
+//                DeviceValidateErrorEntity.class,
+//                TestEntity.class,
+//        };
+//
+//        CommonConfiguration commonConfiguration = new CommonConfiguration(config.getJdbcCloudUrl(),
+//                config.getJdbcUser(), config.getJdbcPassword(), classes);
+//
+//        commonConfiguration.setJdbcDriverClass(config.getJdbcDriverClass());
+//        commonConfiguration.setShowSQL(Boolean.valueOf(config.getHibernateShowSql()));
+//        commonConfiguration.setDialect(config.getHibernateDialect());
+//        commonConfiguration.setFormatSQL(Boolean.valueOf(config.getHibernateFormatSql()));
+//        commonConfiguration.setBatchSize(Integer.valueOf(config.getHibernateJdbcBatchSize()));
+//        commonConfiguration.setAutoCommit(Boolean.valueOf(config.getHibernateAutoCommit()));
+//
+//        commonConfiguration.setMinPoolSize(Integer.valueOf(config.getMinPoolSize()));
+//        commonConfiguration.setMaxPoolSize(Integer.valueOf(config.getMaxPoolSize()));
+//        commonConfiguration.setAcquireIncrement(Integer.valueOf(config.getAcquireIncrement()));
+//        commonConfiguration.setIdleConnectionTestPeriod(Integer.valueOf(config.getIdleConnectionTestPeriod()));
+//        commonConfiguration.setMaxIdleTime(Integer.valueOf(config.getMaxIdleTime()));
+//        commonConfiguration.setAcquireIncrement(Integer.valueOf(config.getAcquireIncrement()));
+//        commonConfiguration.setInitialPoolSize(Integer.valueOf(config.getInitialPoolSize()));
+//        commonConfiguration.setMaxIdleTimeExcessConnections(
+//                Integer.valueOf(config.getMaxIdleTimeExcessConnections()));
+//
+//        return commonConfiguration;
+//    }
 
-        CommonConfiguration commonConfiguration = new CommonConfiguration(config.getJdbcCloudUrl(),
-                config.getJdbcUser(), config.getJdbcPassword(), classes);
 
-        commonConfiguration.setJdbcDriverClass(config.getJdbcDriverClass());
-        commonConfiguration.setShowSQL(Boolean.valueOf(config.getHibernateShowSql()));
-        commonConfiguration.setDialect(config.getHibernateDialect());
-        commonConfiguration.setFormatSQL(Boolean.valueOf(config.getHibernateFormatSql()));
-        commonConfiguration.setBatchSize(Integer.valueOf(config.getHibernateJdbcBatchSize()));
-        commonConfiguration.setAutoCommit(Boolean.valueOf(config.getHibernateAutoCommit()));
-
-        commonConfiguration.setMinPoolSize(Integer.valueOf(config.getMinPoolSize()));
-        commonConfiguration.setMaxPoolSize(Integer.valueOf(config.getMaxPoolSize()));
-        commonConfiguration.setAcquireIncrement(Integer.valueOf(config.getAcquireIncrement()));
-        commonConfiguration.setIdleConnectionTestPeriod(Integer.valueOf(config.getIdleConnectionTestPeriod()));
-        commonConfiguration.setMaxIdleTime(Integer.valueOf(config.getMaxIdleTime()));
-        commonConfiguration.setAcquireIncrement(Integer.valueOf(config.getAcquireIncrement()));
-        commonConfiguration.setInitialPoolSize(Integer.valueOf(config.getInitialPoolSize()));
-        commonConfiguration.setMaxIdleTimeExcessConnections(
-                Integer.valueOf(config.getMaxIdleTimeExcessConnections()));
-
-        return commonConfiguration;
-    }
-
-
-    public CommonDAO getCommonDAO() {
-        return commonDAO;
-    }
+//    public CommonDAO getCommonDAO() {
+//        return commonDAO;
+//    }
 
     public DeviceValidateErrorEntity findByDevice(String deviceId, String deviceMac, String deviceHwId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DeviceValidateErrorEntity.class)
                 .add(Restrictions.eq("device_id", deviceId))
                 .add(Restrictions.eq("device_mac", deviceMac))
                 .add(Restrictions.eq("device_hw_id", deviceHwId));
-        return commonDAO.findByCriteriaUnique(criteria, DeviceValidateErrorEntity.class);
+        return null;
+//        return commonDAO.findByCriteriaUnique(criteria, DeviceValidateErrorEntity.class);
     }
 
 //    public DeviceValidateErrorEntity saveOrUpdate(DeviceValidateErrorEvent event) {

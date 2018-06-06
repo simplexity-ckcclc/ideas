@@ -58,7 +58,7 @@ public class Consumer implements Runnable {
     public static void main(String[] args) {
         String groupId = "ckcclcConsumer";
 //        String brokers = args[0];
-        String brokers = "172.18.0.153:10209";
+        String brokers = "172.18.0.119:10209";
         String topics = "SensefacePush";
 //        String topics = args[1];
 

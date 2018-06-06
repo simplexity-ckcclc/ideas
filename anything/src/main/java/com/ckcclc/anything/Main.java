@@ -6,15 +6,19 @@
 package com.ckcclc.anything;
 
 import com.ckcclc.anything.json.PeopleRemark;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,13 +27,23 @@ public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) throws SocketException {
+    public static void main(String[] args) throws Exception {
 //        System.out.println(getLocalIPv4Address().getHostAddress());
 //        System.out.println(Main.class.getResource("/").getFile());
 //        System.out.println(Instant.now().toString());
 //        System.out.println(new Date());
 //        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        streamNull();
+//        streamNull();
+//        sublist();
+//        System.out.println(Runtime.getRuntime().availableProcessors());
+//        baseEncode();
+        time();
+    }
+
+    private static void time() {
+        Date now = new Date();
+        System.out.println(now.getTime());
+        System.out.println(new Timestamp(now.getTime()).getTime());
     }
 
     private static void utc() {
@@ -109,5 +123,21 @@ public class Main {
                 filter(Objects::nonNull).map(String::valueOf).collect(Collectors.joining(","));
         System.out.println(string);
         System.out.println(StringUtils.isNotBlank(string));
+    }
+
+    private static void sublist() {
+        Integer[] array = new Integer[7];
+        Arrays.fill(array, 1);
+        List<Integer> list = Arrays.asList(array);
+        int batchSize = 3;
+        for (int i = 0; i <= (list.size() - 1) / batchSize; i++) {
+            System.out.println(list.subList(i * batchSize, Math.min((i + 1) * batchSize, list.size())));
+        }
+    }
+
+    private static void baseEncode() throws Exception {
+        byte[] bytes = FileUtils.readFileToByteArray(new File("/Users/ckcclc/Desktop/dilireba.jpg"));
+        System.out.println(new String(Base64.getEncoder().encode(bytes)));
+        System.out.println();
     }
 }
