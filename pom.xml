@@ -21,7 +21,8 @@
         <module>elasticsearch</module>
         <module>quartz</module>
         <module>spark</module>
-    </modules>
+		<module>flink</module>
+	</modules>
 
     <properties>
         <!-- ********************* -->
