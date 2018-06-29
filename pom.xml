@@ -22,7 +22,8 @@
         <module>quartz</module>
         <module>spark</module>
 		<module>flink</module>
-	</modules>
+        <module>jersey</module>
+    </modules>
 
     <properties>
         <!-- ********************* -->
